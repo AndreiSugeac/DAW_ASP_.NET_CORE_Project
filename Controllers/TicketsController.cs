@@ -145,6 +145,12 @@ namespace TicketLine.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> ShowSearchResult(String SearchTerm)
+        {
+            return View("Index", await _context.Ticket.Where(f => f.Description.Contains(SearchTerm))
+                                                      .ToListAsync());
+        }
+
         private bool TicketExists(int id)
         {
             return _context.Ticket.Any(e => e.Id == id);
