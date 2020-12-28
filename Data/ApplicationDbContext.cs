@@ -14,5 +14,9 @@ namespace TicketLine.Data
         {
         }
         public DbSet<TicketLine.Models.Ticket> Ticket { get; set; }
+
+        public DbSet<TicketLine.Models.Airport> Airport { get; set; }
+
+        public DbSet<TicketLine.Models.Flight> Flight { get; set; }
     }
 }

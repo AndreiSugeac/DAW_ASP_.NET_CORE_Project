@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketLine.Data;
 
 namespace TicketLine.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201228180723_NewModel_Airport")]
+    partial class NewModel_Airport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,44 +229,14 @@ namespace TicketLine.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Airport");
-                });
-
-            modelBuilder.Entity("TicketLine.Models.Flight", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("BoardingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DestinationId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TakeoffTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoardingId");
-
-                    b.HasIndex("DestinationId");
-
-                    b.ToTable("Flight");
                 });
 
             modelBuilder.Entity("TicketLine.Models.Ticket", b =>
@@ -331,17 +303,6 @@ namespace TicketLine.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketLine.Models.Flight", b =>
-                {
-                    b.HasOne("TicketLine.Models.Airport", "Boarding")
-                        .WithMany()
-                        .HasForeignKey("BoardingId");
-
-                    b.HasOne("TicketLine.Models.Airport", "Destination")
-                        .WithMany()
-                        .HasForeignKey("DestinationId");
                 });
 #pragma warning restore 612, 618
         }
