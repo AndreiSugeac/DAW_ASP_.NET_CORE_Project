@@ -13,10 +13,26 @@ namespace TicketLine.Data
             : base(options)
         {
         }
-        public DbSet<TicketLine.Models.Ticket> Ticket { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
 
-        public DbSet<TicketLine.Models.Airport> Airport { get; set; }
+        public DbSet<Airport> Airport { get; set; }
 
-        public DbSet<TicketLine.Models.Flight> Flight { get; set; }
+        public DbSet<Flight> Flight { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Flight>()
+                        .HasOne(m => m.Boarding)
+                        .WithMany(t => t.DepartureFlights)
+                        .HasForeignKey(m => m.BoardingId)
+                        .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Flight>()
+                        .HasOne(m => m.Destination)
+                        .WithMany(t => t.ArrivalFlights)
+                        .HasForeignKey(m => m.DestinationId)
+                        .OnDelete(DeleteBehavior.SetNull);
+        }
     }
 }

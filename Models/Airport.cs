@@ -17,6 +17,9 @@ namespace TicketLine.Models
         [Required]
         public string City { get; set; }
 
+        public virtual ICollection<Flight> ArrivalFlights { get; set; }
+        public virtual ICollection<Flight> DepartureFlights { get; set; }
+
         public Airport()
         {
         }

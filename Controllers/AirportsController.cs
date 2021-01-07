@@ -11,24 +11,22 @@ using TicketLine.Models;
 
 namespace TicketLine.Controllers
 {
-    public class TicketsController : Controller
+    public class AirportsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TicketsController(ApplicationDbContext context)
+        public AirportsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Tickets
-        [Authorize]
+        // GET: Airports
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ticket.ToListAsync());
+            return View(await _context.Airport.ToListAsync());
         }
 
-        // GET: Tickets/Details/5
-        [Authorize]
+        // GET: Airports/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,42 +34,39 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
+            var airport = await _context.Airport
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            if (airport == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(airport);
         }
 
-        // GET: Tickets/Create
-        [Authorize]
+        // GET: Airports/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Tickets/Create
+        // POST: Airports/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,Name,City")] Airport airport)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ticket);
+                _context.Add(airport);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(ticket);
+            return View(airport);
         }
 
-        // GET: Tickets/Edit/5
-        [Authorize]
+        // GET: Airports/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,23 +74,22 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.FindAsync(id);
-            if (ticket == null)
+            var airport = await _context.Airport.FindAsync(id);
+            if (airport == null)
             {
                 return NotFound();
             }
-            return View(ticket);
+            return View(airport);
         }
 
-        // POST: Tickets/Edit/5
+        // POST: Airports/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City")] Airport airport)
         {
-            if (id != ticket.Id)
+            if (id != airport.Id)
             {
                 return NotFound();
             }
@@ -104,12 +98,12 @@ namespace TicketLine.Controllers
             {
                 try
                 {
-                    _context.Update(ticket);
+                    _context.Update(airport);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.Id))
+                    if (!AirportExists(airport.Id))
                     {
                         return NotFound();
                     }
@@ -120,11 +114,10 @@ namespace TicketLine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(ticket);
+            return View(airport);
         }
 
-        // GET: Tickets/Delete/5
-        [Authorize]
+        // GET: Airports/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,37 +125,30 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
+            var airport = await _context.Airport
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            if (airport == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(airport);
         }
 
-        // POST: Tickets/Delete/5
-        [Authorize]
+        // POST: Airports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await _context.Ticket.FindAsync(id);
-            _context.Ticket.Remove(ticket);
+            var airport = await _context.Airport.FindAsync(id);
+            _context.Airport.Remove(airport);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ShowSearchResult(String SearchTerm)
+        private bool AirportExists(int id)
         {
-            return View("Index", await _context.Ticket.Where(f => f.Description.Contains(SearchTerm))
-                                                      .ToListAsync());
-        }
-
-        private bool TicketExists(int id)
-        {
-            return _context.Ticket.Any(e => e.Id == id);
+            return _context.Airport.Any(e => e.Id == id);
         }
     }
 }

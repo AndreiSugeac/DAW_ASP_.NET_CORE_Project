@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,24 +10,23 @@ using TicketLine.Models;
 
 namespace TicketLine.Controllers
 {
-    public class TicketsController : Controller
+    public class FlightsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TicketsController(ApplicationDbContext context)
+        public FlightsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Tickets
-        [Authorize]
+        // GET: Flights
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ticket.ToListAsync());
+            var applicationDbContext = _context.Flight.Include(f => f.Boarding).Include(f => f.Destination);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Tickets/Details/5
-        [Authorize]
+        // GET: Flights/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,42 +34,45 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
+            var flight = await _context.Flight
+                .Include(f => f.Boarding)
+                .Include(f => f.Destination)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            if (flight == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(flight);
         }
 
-        // GET: Tickets/Create
-        [Authorize]
+        // GET: Flights/Create
         public IActionResult Create()
         {
+            ViewData["BoardingId"] = new SelectList(_context.Airport, "Id", "City");
+            ViewData["DestinationId"] = new SelectList(_context.Airport, "Id", "City");
             return View();
         }
 
-        // POST: Tickets/Create
+        // POST: Flights/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,BoardingId,DestinationId,TakeoffTime,ArrivalTime")] Flight flight)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ticket);
+                _context.Add(flight);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(ticket);
+            ViewData["BoardingId"] = new SelectList(_context.Airport, "Id", "City", flight.BoardingId);
+            ViewData["DestinationId"] = new SelectList(_context.Airport, "Id", "City", flight.DestinationId);
+            return View(flight);
         }
 
-        // GET: Tickets/Edit/5
-        [Authorize]
+        // GET: Flights/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,23 +80,24 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket.FindAsync(id);
-            if (ticket == null)
+            var flight = await _context.Flight.FindAsync(id);
+            if (flight == null)
             {
                 return NotFound();
             }
-            return View(ticket);
+            ViewData["BoardingId"] = new SelectList(_context.Airport, "Id", "City", flight.BoardingId);
+            ViewData["DestinationId"] = new SelectList(_context.Airport, "Id", "City", flight.DestinationId);
+            return View(flight);
         }
 
-        // POST: Tickets/Edit/5
+        // POST: Flights/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BoardingId,DestinationId,TakeoffTime,ArrivalTime")] Flight flight)
         {
-            if (id != ticket.Id)
+            if (id != flight.Id)
             {
                 return NotFound();
             }
@@ -104,12 +106,12 @@ namespace TicketLine.Controllers
             {
                 try
                 {
-                    _context.Update(ticket);
+                    _context.Update(flight);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TicketExists(ticket.Id))
+                    if (!FlightExists(flight.Id))
                     {
                         return NotFound();
                     }
@@ -120,11 +122,12 @@ namespace TicketLine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(ticket);
+            ViewData["BoardingId"] = new SelectList(_context.Airport, "Id", "City", flight.BoardingId);
+            ViewData["DestinationId"] = new SelectList(_context.Airport, "Id", "City", flight.DestinationId);
+            return View(flight);
         }
 
-        // GET: Tickets/Delete/5
-        [Authorize]
+        // GET: Flights/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,37 +135,32 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
+            var flight = await _context.Flight
+                .Include(f => f.Boarding)
+                .Include(f => f.Destination)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            if (flight == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(flight);
         }
 
-        // POST: Tickets/Delete/5
-        [Authorize]
+        // POST: Flights/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await _context.Ticket.FindAsync(id);
-            _context.Ticket.Remove(ticket);
+            var flight = await _context.Flight.FindAsync(id);
+            _context.Flight.Remove(flight);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ShowSearchResult(String SearchTerm)
+        private bool FlightExists(int id)
         {
-            return View("Index", await _context.Ticket.Where(f => f.Description.Contains(SearchTerm))
-                                                      .ToListAsync());
-        }
-
-        private bool TicketExists(int id)
-        {
-            return _context.Ticket.Any(e => e.Id == id);
+            return _context.Flight.Any(e => e.Id == id);
         }
     }
 }
