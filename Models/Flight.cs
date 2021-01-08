@@ -27,6 +27,8 @@ namespace TicketLine.Models
 
         public virtual Airport Destination { get; set; }
 
+        public virtual Airplane Airplane { get; set; }
+
         public Flight()
         {
         }

@@ -16,5 +16,9 @@ namespace TicketLine.Models
         public int NumberOfSeats { get; set; }
 
         public virtual ICollection<Seat> Seats { get; set; }
+
+        public int FlightId { get; set; }
+
+        public virtual Flight Flight { get; set; }
     }
 }
