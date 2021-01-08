@@ -19,6 +19,8 @@ namespace TicketLine.Data
 
         public DbSet<Flight> Flight { get; set; }
 
+        public DbSet<Airplane> Airplane { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
