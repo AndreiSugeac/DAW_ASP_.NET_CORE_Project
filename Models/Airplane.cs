@@ -14,5 +14,7 @@ namespace TicketLine.Models
         public string Model { get; set; }
 
         public int NumberOfSeats { get; set; }
+
+        public virtual ICollection<Seat> Seats { get; set; }
     }
 }
