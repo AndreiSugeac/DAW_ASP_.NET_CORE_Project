@@ -12,5 +12,7 @@ namespace TicketLine.Models
         public int AirplaneId { get; set; }
 
         public virtual Airplane Airplane { get; set; }
+
+        public virtual Ticket Ticket { get; set; }
     }
 }

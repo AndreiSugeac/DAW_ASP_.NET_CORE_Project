@@ -12,6 +12,10 @@ namespace TicketLine.Models
 
         public string Description { get; set; }
 
+        public int SeatId { get; set; }
+
+        public virtual Seat Seat { get; set; }
+
         public Ticket()
         {
         }
