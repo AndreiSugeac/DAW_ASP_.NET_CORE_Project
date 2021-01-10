@@ -80,6 +80,10 @@ body {
     margin-right: 1rem;
 }
 
+.admin-only {
+    margin-top: 1em;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

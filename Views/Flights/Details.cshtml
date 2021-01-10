@@ -1,5 +1,6 @@
 ﻿@model TicketLine.Models.Flight
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Details";
 }
@@ -10,34 +11,51 @@
     <h4>Flight</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.TakeoffTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TakeoffTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ArrivalTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ArrivalTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Boarding)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Boarding.City)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            Boarding airport
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Boarding.Name
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Destination)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Destination.City)
+        <dd class="col-sm-10">
+            @Model.Destination.City
+        </dd>
+        <dt class="col-sm-2">
+            Destination airport
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Destination.Name
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a class="btn btn-secondary" asp-action="CreateTicket" asp-route-id="@Model.Id">Get Ticket</a> |
+    <a class="btn btn-primary" asp-action="CreateTicket" asp-route-id="@Model.Id">Get Ticket</a>
+</div>
+<div class="admin-only">
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
     <a asp-action="Index">Back to List</a>
 </div>

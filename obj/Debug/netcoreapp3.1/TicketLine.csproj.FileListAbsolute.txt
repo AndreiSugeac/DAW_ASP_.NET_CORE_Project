@@ -234,7 +234,6 @@ D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Error.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\TicketLine.csprojAssemblyReference.cache
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Create.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Delete.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Details.cshtml.g.cs

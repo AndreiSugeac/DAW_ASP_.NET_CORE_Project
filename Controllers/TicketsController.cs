@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace TicketLine.Controllers
         }
 
         // GET: Tickets
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Ticket.Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Boarding)

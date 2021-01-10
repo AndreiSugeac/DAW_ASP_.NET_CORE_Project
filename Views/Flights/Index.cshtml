@@ -1,70 +1,39 @@
 ﻿@model IEnumerable<TicketLine.Models.Flight>
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Flights</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TakeoffTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArrivalTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Boarding)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TakeoffTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArrivalTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Boarding.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destination.City)
-            </td>
-            <td>
-                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>*@
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    }
+    </p>
 
 <div class="row">
-    @foreach(var item in Model)
+    @foreach (var item in Model)
     {
         <div class="col-4">
             <div class="card">
+                <img class="card-img-top" src="@("../img/" + item.Destination.City + ".jpg")" />
                 <div class="card-body">
                     <h4 class="card-title">@item.Boarding.City to @item.Destination.City</h4>
                     <p class="card-text">Takeoff time: @item.TakeoffTime</p>
                     <p class="card-text">Arrival time: @item.ArrivalTime</p>
-                    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </div>
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    </div>
             </div>
         </div>
     }
