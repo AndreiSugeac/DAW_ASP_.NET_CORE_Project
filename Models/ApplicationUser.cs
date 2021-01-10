@@ -15,5 +15,7 @@ namespace TicketLine.Models
         public string LastName { get; set; }
 
         public string Gender { get; set; }
+
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }
