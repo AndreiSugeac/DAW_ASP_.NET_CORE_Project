@@ -62,7 +62,19 @@ namespace TicketLine.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(airplane);
+
                 await _context.SaveChangesAsync();
+
+                // adding seats for the new airplane entity int the Seat table
+                List<Seat> seats = new List<Seat>();
+                for (int i = 1; i <= airplane.NumberOfSeats; ++i)
+                {
+                    seats.Add(new Seat { AirplaneId = airplane.Id });
+                }
+                _context.Seat.AddRange(seats);
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["FlightId"] = new SelectList(_context.Flight, "Id", "Id", airplane.FlightId);
