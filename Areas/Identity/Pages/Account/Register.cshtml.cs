@@ -112,6 +112,9 @@ namespace TicketLine.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    // adding the member role for all registering users
+                    _userManager.AddToRoleAsync(user, "Member").Wait();
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
