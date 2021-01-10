@@ -2,6 +2,8 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    ViewData["Male"] = "Male";
+    ViewData["Female"] = "Female";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -29,8 +31,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Gender"></label>
-                <input asp-for="Input.Gender" class="form-control" />
-                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                <select asp-for="Input.Gender" class="form-control" asp-items="@new MultiSelectList(new List<string> {(string)@ViewData["Male"], (string)@ViewData["Female"] })"></select>
+                @*<input asp-for="Input.Gender" class="form-control" />
+                <span asp-validation-for="Input.Gender" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
