@@ -22,7 +22,8 @@ namespace TicketLine.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Ticket.Include(t => t.Seat);
+            var applicationDbContext = _context.Ticket.Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Boarding)
+                                                      .Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Destination);
             return View(await applicationDbContext.ToListAsync());
         }
 

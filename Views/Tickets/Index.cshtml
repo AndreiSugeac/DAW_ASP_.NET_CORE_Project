@@ -13,7 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.Seat.Airplane.Flight.Boarding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seat.Airplane.Flight.Destination)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Seat)
@@ -25,7 +28,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.Seat.Airplane.Flight.Boarding.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat.Airplane.Flight.Destination.City)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Seat.Id)

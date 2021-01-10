@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,22 @@ namespace TicketLine.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public FlightsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public FlightsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        [HttpGet]
+        public async Task<string> GetCurrentUserId()
+        {
+            ApplicationUser usr = await GetCurrentUserAsync();
+            return usr?.Id;
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Flights
         public async Task<IActionResult> Index()
@@ -156,6 +170,41 @@ namespace TicketLine.Controllers
             _context.Flight.Remove(flight);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize]
+        // POST : Flights/CreateTicket/5
+        public async Task<IActionResult> CreateTicket(int id)
+        {
+            var flight = await _context.Flight.FindAsync(id);
+            var airplane = _context.Airplane.Where(p => p.FlightId == id);
+            var seat = _context.Seat.Include(f => f.Ticket).Where(p => p.AirplaneId == airplane.FirstOrDefault().Id && p.Ticket == null);
+
+            if(seat == null)
+            {
+                ModelState.AddModelError(string.Empty, "No more seats are left for this flight.");
+                return RedirectToAction(nameof(Index));
+            }
+
+            var ticket = new Ticket
+            {
+                SeatId = seat.FirstOrDefault().Id,
+                OwnerId = await GetCurrentUserId()
+            };
+
+            if (ticket != null)
+            {
+                _context.Ticket.Add(ticket);
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Your request could not be processed!");
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
         }
 
         private bool FlightExists(int id)

@@ -240,4 +240,6 @@ D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Delete
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Details.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Edit.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Index.cshtml.g.cs
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\scopedcss\bundle\TicketLine.styles.css
+D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
+D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.local.json
