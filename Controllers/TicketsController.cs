@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,14 +20,13 @@ namespace TicketLine.Controllers
         }
 
         // GET: Tickets
-        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ticket.ToListAsync());
+            var applicationDbContext = _context.Ticket.Include(t => t.Seat);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Tickets/Details/5
-        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,6 +35,7 @@ namespace TicketLine.Controllers
             }
 
             var ticket = await _context.Ticket
+                .Include(t => t.Seat)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -47,19 +46,18 @@ namespace TicketLine.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize]
         public IActionResult Create()
         {
+            ViewData["SeatId"] = new SelectList(_context.Seat, "Id", "Id");
             return View();
         }
 
         // POST: Tickets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,Description,SeatId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -67,11 +65,11 @@ namespace TicketLine.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["SeatId"] = new SelectList(_context.Seat, "Id", "Id", ticket.SeatId);
             return View(ticket);
         }
 
         // GET: Tickets/Edit/5
-        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,16 +82,16 @@ namespace TicketLine.Controllers
             {
                 return NotFound();
             }
+            ViewData["SeatId"] = new SelectList(_context.Seat, "Id", "Id", ticket.SeatId);
             return View(ticket);
         }
 
         // POST: Tickets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,SeatId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -120,11 +118,11 @@ namespace TicketLine.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["SeatId"] = new SelectList(_context.Seat, "Id", "Id", ticket.SeatId);
             return View(ticket);
         }
 
         // GET: Tickets/Delete/5
-        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,6 +131,7 @@ namespace TicketLine.Controllers
             }
 
             var ticket = await _context.Ticket
+                .Include(t => t.Seat)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -143,7 +142,6 @@ namespace TicketLine.Controllers
         }
 
         // POST: Tickets/Delete/5
-        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -152,12 +150,6 @@ namespace TicketLine.Controllers
             _context.Ticket.Remove(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> ShowSearchResult(String SearchTerm)
-        {
-            return View("Index", await _context.Ticket.Where(f => f.Description.Contains(SearchTerm))
-                                                      .ToListAsync());
         }
 
         private bool TicketExists(int id)

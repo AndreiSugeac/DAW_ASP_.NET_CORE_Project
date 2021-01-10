@@ -132,11 +132,6 @@ D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.
 D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Programming\DAW\TicketLine\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Create.cshtml.g.cs
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Delete.cshtml.g.cs
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Details.cshtml.g.cs
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Edit.cshtml.g.cs
-D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Index.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Airports\Create.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Airports\Delete.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Airports\Details.cshtml.g.cs
@@ -243,3 +238,8 @@ D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\TicketLine.csprojAssemblyReference.cache
+D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Create.cshtml.g.cs
+D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Delete.cshtml.g.cs
+D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Details.cshtml.g.cs
+D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Edit.cshtml.g.cs
+D:\Programming\DAW\TicketLine\obj\Debug\netcoreapp3.1\Razor\Views\Tickets\Index.cshtml.g.cs

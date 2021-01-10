@@ -19,6 +19,11 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SeatId" class="control-label"></label>
+                <select asp-for="SeatId" class="form-control" asp-items="ViewBag.SeatId"></select>
+                <span asp-validation-for="SeatId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
