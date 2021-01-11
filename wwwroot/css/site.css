@@ -85,6 +85,22 @@ body {
     width: 33%;
 }
 
+.ticket {
+    margin-bottom: 2em;
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,0.06) 0 5px 10px 1px;
+}
+
+.table td, .table th {
+    padding: 1.25em;
+    vertical-align: top;
+    border-top: none;
+}
+
+.table tr {
+    box-shadow: rgba(0,0,0,0.12) 0 5px 10px 1px;
+}
+
 .footer {
     position: absolute;
     bottom: 0;

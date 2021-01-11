@@ -34,9 +34,22 @@ namespace TicketLine.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Flights
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
+            var flights = from f in _context.Flight
+                          select f;
+
             var applicationDbContext = _context.Flight.Include(f => f.Boarding).Include(f => f.Destination);
+
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                flights = flights.Where(f => f.Boarding.City.Contains(searchString) || f.Destination.City.Contains(searchString)
+                                          || f.Boarding.Name.Contains(searchString) || f.Destination.Name.Contains(searchString)).
+                                          Include(f => f.Boarding).Include(f => f.Destination);
+
+                return View(await flights.ToListAsync());
+            }
+
             return View(await applicationDbContext.ToListAsync());
         }
 

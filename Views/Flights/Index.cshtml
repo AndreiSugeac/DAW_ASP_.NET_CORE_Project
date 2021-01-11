@@ -8,10 +8,19 @@
 
 <h1>Flights</h1>
 
+<form asp-controller="Flights" asp-action="Index">
+    <div class="input-group">
+        <input class="form-control" type="text" name="SearchString" />
+        <div class="input-group-append">
+            <input type="submit" class="btn btn-primary" value="Search" />
+        </div>
+    </div>
+</form>
+
 <p>
     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
     {
-        <a class="btn btn-primary" asp-action="Create">Create New</a>
+        <a class="btn btn-primary" asp-action="Create" style="margin-top: 1em;">Create New</a>
     }
     </p>
 

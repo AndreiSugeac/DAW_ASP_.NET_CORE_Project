@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,17 +16,33 @@ namespace TicketLine.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public TicketsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public TicketsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
+        [HttpGet]
+        public async Task<string> GetCurrentUserId()
+        {
+            ApplicationUser usr = await GetCurrentUserAsync();
+            return usr?.Id;
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Tickets
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Ticket.Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Boarding)
+            var id_user = await GetCurrentUserId();
+            var applicationDbContext = id_user != null ? _context.Ticket.Where(f => f.OwnerId == id_user).Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Boarding)
+                                                      .Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Destination) :
+                                                      _context.Ticket.Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Boarding)
                                                       .Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Destination);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -37,9 +54,9 @@ namespace TicketLine.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Ticket
-                .Include(t => t.Seat)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _context.Ticket.Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Boarding)
+                                              .Include(t => t.Seat).ThenInclude(t => t.Airplane).ThenInclude(t => t.Flight).ThenInclude(t => t.Destination)
+                                              .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
                 return NotFound();

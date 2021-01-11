@@ -1,7 +1,10 @@
 ﻿@model TicketLine.Models.Ticket
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Details";
+    ViewData["ShowButtons"] = false;
+    ViewData["ShowSeat"] = Model.Seat.Id;
 }
 
 <h1>Details</h1>
@@ -9,22 +12,44 @@
 <div>
     <h4>Ticket</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+    @*<dl class="row">
+        <dt class="col-sm-2">
+            Boarding city
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Seat.Airplane.Flight.Boarding.City)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Seat)
+        <dt class="col-sm-2">
+            Boarding Airport
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Seat.Airplane.Flight.Boarding.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Destination city
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Seat.Airplane.Flight.Destination.City)
+        </dd>
+        <dt class="col-sm-2">
+            Destination airport
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Seat.Airplane.Flight.Destination.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Seat number
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Seat.Id)
         </dd>
-    </dl>
+    </dl>*@
+    <partial name="_DisplayFlightsPartial" model="Model.Seat.Airplane.Flight" view-data="ViewData" />
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
     <a asp-action="Index">Back to List</a>
 </div>

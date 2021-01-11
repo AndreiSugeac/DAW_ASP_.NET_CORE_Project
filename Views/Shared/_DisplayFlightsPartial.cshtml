@@ -6,6 +6,7 @@
     var pathIndex = "../img/" + Model.Destination.City + ".jpg";
     var pathDetails = "/img/" + Model.Destination.City + ".jpg";
     var showButtons = (bool) ViewData["ShowButtons"];
+    var seatNumber = (int?)ViewData["ShowSeat"];
 }
 
 <div class="col-4">
@@ -17,22 +18,28 @@
         else { 
             <img class="card-img-top" src="@pathDetails" />
         }
-        <div class="card-body">
-            <h4 class="card-title">@Model.Boarding.City to @Model.Destination.City</h4>
-            <p class="card-text">Takeoff time: @Model.TakeoffTime</p>
-            <p class="card-text">Arrival time: @Model.ArrivalTime</p>
-            @if (showButtons)
+    <div class="card-body">
+        <h4 class="card-title">@Model.Boarding.City to @Model.Destination.City</h4>
+        <p class="card-text">Boarding airport: @Model.Boarding.Name</p>
+        <p class="card-text">Destination airport: @Model.Destination.Name</p>
+        <p class="card-text">Takeoff time: @Model.TakeoffTime</p>
+        <p class="card-text">Arrival time: @Model.ArrivalTime</p>
+        @if (seatNumber != null)
+        {
+            <p class="card-text">Seat number: @seatNumber</p>
+        }
+        @if (showButtons)
+        {
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-                    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                }
-                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@Model.Id">Details</a>
-                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-                    <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-                }
+                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
             }
-        </div>
+            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+            }
+        }
+    </div>
     </div>
 </div>
