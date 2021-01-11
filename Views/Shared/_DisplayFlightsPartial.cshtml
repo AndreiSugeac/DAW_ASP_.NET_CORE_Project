@@ -1,0 +1,38 @@
+﻿@model Flight
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{ 
+    var pathIndex = "../img/" + Model.Destination.City + ".jpg";
+    var pathDetails = "/img/" + Model.Destination.City + ".jpg";
+    var showButtons = (bool) ViewData["ShowButtons"];
+}
+
+<div class="col-4">
+    <div class="card">
+        @if (showButtons)
+        { 
+            <img class="card-img-top" src="@pathIndex" />
+        }
+        else { 
+            <img class="card-img-top" src="@pathDetails" />
+        }
+        <div class="card-body">
+            <h4 class="card-title">@Model.Boarding.City to @Model.Destination.City</h4>
+            <p class="card-text">Takeoff time: @Model.TakeoffTime</p>
+            <p class="card-text">Arrival time: @Model.ArrivalTime</p>
+            @if (showButtons)
+            {
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                }
+                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@Model.Id">Details</a>
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                }
+            }
+        </div>
+    </div>
+</div>
